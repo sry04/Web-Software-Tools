@@ -1,31 +1,66 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 
-interface TodoFormProps {
-  addTodo: (todo: string) => void;
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
 }
 
-function TodoForm({ addTodo }: TodoFormProps) {
-  const [todo, setTodo] = useState<string>("");
+interface TodoFormProps {
+  addTodo: (text: string) => void;
+  editingTodo: Todo | null;
+  updateTodo: (id: number, text: string) => void;
+  cancelEdit: () => void;
+}
+
+function TodoForm({
+  addTodo,
+  editingTodo,
+  updateTodo,
+  cancelEdit,
+}: TodoFormProps) {
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    setText(editingTodo ? editingTodo.text : "");
+  }, [editingTodo]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (todo.trim() === "") return;
+    if (!text.trim()) return;
 
-    addTodo(todo);
-    setTodo("");
+    if (editingTodo) {
+      updateTodo(editingTodo.id, text);
+    } else {
+      addTodo(text);
+    }
+
+    setText("");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="todo-form" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Ketik tugas..."
-        value={todo}
-        onChange={(e) => setTodo(e.target.value)}
+        placeholder="Masukkan tugas..."
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       />
 
-      <button type="submit">Tambah</button>
+      <button type="submit">
+        {editingTodo ? "Simpan" : "Tambah"}
+      </button>
+
+      {editingTodo && (
+        <button
+          type="button"
+          className="cancel-button"
+          onClick={cancelEdit}
+        >
+          Batal
+        </button>
+      )}
     </form>
   );
 }
