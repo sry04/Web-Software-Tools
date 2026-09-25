@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
-function TodoForm({ addTodo: any }) {
-  const [todo, setTodo] = useState("");
+interface TodoFormProps {
+  addTodo: (todo: string) => void;
+}
 
-  const handleSubmit = (e) => {
+function TodoForm({ addTodo }: TodoFormProps) {
+  const [todo, setTodo] = useState<string>("");
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (todo.trim() === "") return;

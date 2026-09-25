@@ -1,10 +1,12 @@
-function TodoList({ todos }) {
+interface TodoListProps {
+  todos: string[];
+}
+
+function TodoList({ todos }: TodoListProps) {
   return (
     <ul>
       {todos.map((todo, index) => (
-        <li key={index}>
-          {todo}
-        </li>
+        <li key={index}>{todo}</li>
       ))}
     </ul>
   );

@@ -4,12 +4,12 @@ import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 
 function App() {
-  const [todos, setTodos] = useState([
+  const [todos, setTodos] = useState<string[]>([
     "Belajar React",
-    "Mengerjakan tugas GitHub"
+    "Mengerjakan tugas GitHub",
   ]);
 
-  const addTodo = (todo: any) => {
+  const addTodo = (todo: string) => {
     setTodos([...todos, todo]);
   };
 
